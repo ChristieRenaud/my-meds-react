@@ -1,0 +1,168 @@
+* {
+  box-sizing: border-box;
+}
+image {
+  display: block;
+  max-width: 100%;
+}
+body {
+  font-family: "Noto Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  /* user-select: none; */
+  /* max-width: 320px; */
+}
+
+header {
+  background-color: #f2de61;
+  background-image: url(./assets/meds-background-crop.jpg);
+  background-size: cover;
+  background-position: center;
+  border-bottom: 2px solid rgba(37, 67, 108, 0.5);
+  width: 100vw;
+  height: 175px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+h1 {
+  margin: 0;
+  padding-bottom: 20px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  font-size: 46px;
+  color: #71b9db;
+}
+
+p {
+  line-height: 1.7;
+  opacity: 0.8;
+}
+.container {
+  background-color: #f1cd71;
+  width: 100vw;
+  min-height: 100vh;
+  margin-top: 0;
+  padding: 30px 35px;
+}
+.subhead {
+  font-weight: 700;
+  color: #25436c;
+  margin-top: 30px;
+}
+
+.link {
+  text-decoration: none;
+  color: #25436c;
+  font-weight: bold;
+}
+
+.link:hover,
+.link:focus {
+  color: #71b9db;
+}
+
+.error-message {
+  font-size: 14px;
+  color: rgba(37, 67, 108, 0.8);
+  /* padding-bottom: 16px; */
+  margin-top: 0;
+}
+
+li {
+  list-style-type: none;
+  font-family: inherit;
+  color: #25436c;
+  font-weight: 600;
+}
+
+.list-items {
+  padding-left: 0;
+}
+.list-items li {
+  line-height: 2;
+}
+
+.list-item:hover,
+.list-item:focus {
+  color: azure;
+  cursor: pointer;
+}
+
+.list-info {
+  display: none;
+}
+
+.form {
+  display: flex;
+  font-family: inherit;
+  flex-direction: column;
+  padding: 20px;
+  background: #fef4ba;
+  border-radius: 15px;
+  margin: 30px -10px;
+}
+
+label {
+  font-weight: 600;
+  padding-bottom: 5px;
+  color: rgb(37, 67, 108, 0.8);
+}
+input {
+  margin-bottom: 15px;
+  border: 0;
+  border-radius: 5px;
+  padding: 8px;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.input:hover,
+.input:focus {
+  background-color: #b6dff2;
+}
+.btn {
+  border: 0;
+  border-radius: 5px;
+  padding: 6px;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  background: #71b9db;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: 500ms;
+}
+.btn-form {
+  font-size: 18px;
+}
+
+.btn-signout {
+  margin-top: 20px;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-size: 12px;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: #5176a8;
+}
+.fa-circle-xmark {
+  /* display: none; */
+  color: #25436c;
+  padding-left: 10px;
+  font-size: 14px;
+}
+
+.fa-circle-xmark:hover,
+.fa-circle-xmark:focus {
+  color: red;
+}
