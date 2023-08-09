@@ -1,6 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth"
 import { auth, database } from "../firebase"
 import { ref, set } from "firebase/database"
 
@@ -10,6 +13,19 @@ export default function Signup() {
   const [password, setPassword] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid
+        console.log(uid)
+        navigate(`/${uid}`)
+      } else {
+        console.log("user logged out")
+      }
+    })
+  }, [])
 
   function createUserAccount(id) {
     set(ref(database, "users/" + id), {
@@ -24,13 +40,22 @@ export default function Signup() {
         const user = userCredential.user
         const userId = user.uid
         console.log(userId)
+        setError(() => null)
         createUserAccount(userId)
         navigate("/")
       })
       .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        console.log(errorCode, errorMessage)
+        console.log(error.code, error.message)
+        email === "" && password === ""
+          ? setError("Email and password missing.")
+          : email === ""
+          ? setError("Email missing.")
+          : setError("Password missing.")
+        if (error.code === "auth/email-already-in-use") {
+          setError(
+            "Account already exists. Log in or create account with new email address."
+          )
+        }
       })
   }
 
@@ -82,6 +107,7 @@ export default function Signup() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        {error && <p className="error-message">{error}</p>}
         <button
           className="btn btn-form"
           id="signup-button"
@@ -91,6 +117,7 @@ export default function Signup() {
           Submit
         </button>
       </form>
+
       <p>
         Already have an account?{" "}
         <NavLink to="/" className="link">

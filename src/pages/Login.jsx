@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react"
-import {
-  setPersistence,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  browserSessionPersistence,
-} from "firebase/auth"
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
 import { NavLink, useNavigate } from "react-router-dom"
 
@@ -17,7 +12,8 @@ export default function Login() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid
-        navigate(`/${uid}`)
+        console.log(uid)
+        navigate(`../${uid}`)
       } else {
         console.log("user logged out")
       }
@@ -31,14 +27,14 @@ export default function Login() {
       .then((userCredential) => {
         const user = userCredential.user
         setError(() => null)
-        navigate("/userId")
+        navigate(`/${user.uid}`)
         console.log(user)
       })
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
         console.log(errorCode, errorMessage)
-        setError(() => "Wrong email or password, please try again.")
+        setError(() => "Wrong email or password, please try again")
       })
   }
   return (

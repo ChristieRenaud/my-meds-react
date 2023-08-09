@@ -90,8 +90,8 @@ li {
 
 .list-item:hover,
 .list-item:focus {
-  color: azure;
-  cursor: pointer;
+  /* color: azure;
+  cursor: pointer; */
 }
 
 .list-info {
@@ -124,7 +124,7 @@ input {
 
 .input:hover,
 .input:focus {
-  background-color: #b6dff2;
+  background-color: #e5ecf5;
 }
 .btn {
   border: 0;
@@ -153,16 +153,15 @@ input {
 
 .btn:hover,
 .btn:focus {
-  background-color: #5176a8;
+  background-color: rgba(37, 57, 104, 0.7);
 }
 .fa-circle-xmark {
-  /* display: none; */
-  color: #25436c;
+  color: rgba(37, 57, 104, 0.25);
   padding-left: 10px;
   font-size: 14px;
 }
 
 .fa-circle-xmark:hover,
 .fa-circle-xmark:focus {
-  color: red;
+  color: #25436c;
 }

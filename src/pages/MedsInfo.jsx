@@ -1,29 +1,17 @@
 import React, { useState, useEffect } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons"
 import { signOut, onAuthStateChanged } from "firebase/auth"
 import { auth, database } from "../firebase"
 import { useNavigate } from "react-router-dom"
-import { onValue, ref, push, remove, set } from "firebase/database"
+import { onValue, ref, push, remove } from "firebase/database"
+import ListItem from "../components/ListItem"
 
 export default function MedsInfo() {
   const [medications, setMedications] = useState([])
   const [formName, setFormName] = useState("")
   const [formAmt, setFormAmt] = useState("")
-  // const [userId, setUserId] = useState("")
-  // const [userInDB, setUserInDB] = useState("")
   const navigate = useNavigate()
-  const [error, setError] = useState("")
-
-  // const renderMedicationList = medications.map((itemValue) => (
-  //   <li className="list-item" key={itemValue.id} id={itemValue.id}>
-  //     <span>
-  //       {itemValue.name}, {itemValue.amt}
-  //     </span>
-  //     <FontAwesomeIcon icon={faCircleXmark} className="fa-circle-xmark" />
-  //   </li>
-  //   // {/* <p className="list-info">itemValue.info</p> */}
-  // ))
+  const [error, setError] = useState(null)
+  const user = auth.currentUser
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -33,7 +21,6 @@ export default function MedsInfo() {
 
         onValue(userInDB, (snapshot) => {
           setMedications(() => [])
-          console.log("useEffect ran")
           if (snapshot.exists()) {
             snapshot.forEach((item) => {
               if (item.key !== "userId") {
@@ -47,21 +34,11 @@ export default function MedsInfo() {
                 ])
               }
             })
-            console.log(medications)
           }
         })
       }
     })
   }, [])
-
-  // useEffect(() => {   // onAuthStateChanged(auth, (user) => {
-  //   //   if (!user) {
-  //   //     navigate(`/`)
-  //   //   } else {
-  //   //     setUserId(() => auth.currentUser.uid)
-  //   //     console.log(userId)
-  //   //   }
-  //   // })}, [])
 
   const handleLogout = () => {
     signOut(auth)
@@ -71,6 +48,7 @@ export default function MedsInfo() {
       })
       .catch((error) => {
         console.log(error.message)
+        setError(() => "Error signing out.")
       })
   }
 
@@ -85,39 +63,28 @@ export default function MedsInfo() {
   const handleSubmit = (e) => {
     e.preventDefault()
     setError("")
+    const userId = user.uid
+    const userInDB = ref(database, `users/${userId}`)
+    if (formAmt && formName) {
+      setMedications(() => [])
+      push(userInDB, {
+        name: formName,
+        amt: formAmt,
+        info: "a drug",
+      })
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const userId = user.uid
-        const userInDB = ref(database, `users/${userId}`)
-        if (formAmt && formName) {
-          setMedications(() => [])
-          push(userInDB, {
-            name: formName,
-            amt: formAmt,
-            info: "a drug",
-          })
-
-          setFormAmt(() => "")
-          setFormName(() => "")
-          console.log(formName, formAmt)
-        } else {
-          setError(() => "Please fill in both fields")
-        }
-      }
-    })
+      setFormAmt(() => "")
+      setFormName(() => "")
+    } else {
+      setError(() => "Please fill in both fields")
+    }
   }
 
   const handleDelete = (e) => {
     const itemId = e.currentTarget.parentElement.id
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const userId = user.uid
-        let exactLocationOfItemInDB = ref(database, `users/${userId}/${itemId}`)
-        remove(exactLocationOfItemInDB)
-        console.log(itemId, "removed")
-      }
-    })
+    const userId = user.uid
+    let exactLocationOfItemInDB = ref(database, `users/${userId}/${itemId}`)
+    remove(exactLocationOfItemInDB)
   }
 
   return (
@@ -125,18 +92,12 @@ export default function MedsInfo() {
       <div className="meds-list">
         <h2 className="subhead">Medicines</h2>
         <ul className="list-items" id="meds-list-items">
-          {medications.map((itemValue) => (
-            <li
-              className="list-item"
-              key={itemValue.medId}
-              id={itemValue.medId}
-            >
-              <span>
-                {itemValue.medName}, {itemValue.medAmt}
-              </span>
-              <FontAwesomeIcon icon={faCircleXmark} onClick={handleDelete} />
-            </li>
-            // {/* <p className="list-info">itemValue.info</p> */}
+          {medications.map((item) => (
+            <ListItem
+              key={item.medId}
+              handleDelete={handleDelete}
+              item={item}
+            />
           ))}
         </ul>
       </div>
