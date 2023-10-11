@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth"
 import { auth, database } from "../firebase"
 import { ref, set } from "firebase/database"
@@ -32,6 +33,18 @@ export default function Signup() {
       userId: id,
     })
   }
+
+  function updateUserAccount() {
+    updateProfile(auth.currentUser, {
+      displayName: firstName,
+    })
+      .then(() => {
+        console.log("Profile updated!")
+      })
+      .catch((error) => {
+        console.log(error.message)
+      })
+  }
   const onSubmit = async (e) => {
     e.preventDefault()
 
@@ -42,6 +55,7 @@ export default function Signup() {
         console.log(userId)
         setError(() => null)
         createUserAccount(userId)
+        updateUserAccount()
         navigate("/")
       })
       .catch((error) => {

@@ -12,6 +12,7 @@ export default function MedsInfo() {
   const navigate = useNavigate()
   const [error, setError] = useState(null)
   const user = auth.currentUser
+  console.log(user)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -86,11 +87,12 @@ export default function MedsInfo() {
     let exactLocationOfItemInDB = ref(database, `users/${userId}/${itemId}`)
     remove(exactLocationOfItemInDB)
   }
-
   return (
     <div>
       <div className="meds-list">
-        <h2 className="subhead">Medicines</h2>
+        <h2 className="subhead">
+          {user.displayName && `${user.displayName}'s`} Medicines
+        </h2>
         <ul className="list-items" id="meds-list-items">
           {medications.map((item) => (
             <ListItem
