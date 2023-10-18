@@ -5,6 +5,7 @@ import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import MedsInfo from "./pages/MedsInfo"
 import Layout from "./components/Layout"
+import SelectedMedInfo from "./pages/SelectedMedInfo"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Login />} />
           <Route path="/:id" element={<MedsInfo />} />
+          <Route path="/:id/:info" element={<SelectedMedInfo />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
       </Routes>

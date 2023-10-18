@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons"
+import { NavLink } from "react-router-dom"
 
 export default function ListItem(props) {
   return (
@@ -9,7 +10,13 @@ export default function ListItem(props) {
       id={props.item.medId}
     >
       <span>
-        {props.item.medName}, {props.item.medAmt}
+        <NavLink
+          to={`${props.item.medName}`}
+          className="link"
+          state={{ item: props.item }}
+        >
+          {props.item.medName}, {props.item.medAmt}
+        </NavLink>
       </span>
       <FontAwesomeIcon
         icon={faCircleXmark}
