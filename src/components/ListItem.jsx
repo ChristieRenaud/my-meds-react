@@ -18,10 +18,12 @@ export default function ListItem(props) {
           {props.item.medName}, {props.item.medAmt}
         </NavLink>
       </span>
-      <FontAwesomeIcon
-        icon={faCircleXmark}
-        onClick={(e) => props.handleDelete(e)}
-      />
+      <span>
+        <FontAwesomeIcon
+          icon={faCircleXmark}
+          onClick={(e) => props.handleDelete(e)}
+        />
+      </span>
     </li>
   )
 }

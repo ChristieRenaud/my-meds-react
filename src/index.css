@@ -79,13 +79,14 @@ li {
   font-family: inherit;
   color: #25436c;
   font-weight: 600;
+  font-size: 18px;
 }
 
 .list-items {
   padding-left: 0;
 }
 .list-items li {
-  line-height: 2;
+  line-height: 2.5;
 }
 
 .list-item:hover,
@@ -150,10 +151,14 @@ input {
   padding-right: 2em;
   font-size: 12px;
 }
-
+.btn-back {
+  padding-left: 2em;
+  padding-right: 2em;
+  color: rgba(37, 67, 108, 1);
+}
 .btn:hover,
 .btn:focus {
-  background-color: rgba(37, 57, 104, 0.7);
+  background-color: rgba(37, 57, 104, 0.6);
 }
 .fa-circle-xmark {
   color: rgba(37, 57, 104, 0.25);
@@ -164,4 +169,8 @@ input {
 .fa-circle-xmark:hover,
 .fa-circle-xmark:focus {
   color: #25436c;
+}
+
+.label-info {
+  font-size: 12px;
 }
