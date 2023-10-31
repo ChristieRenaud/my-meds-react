@@ -13,17 +13,15 @@ export default function ListItem(props) {
         <NavLink
           to={`${props.item.medName}`}
           className="link"
-          state={{ item: props.item }}
+          state={{ item: [props.item] }}
         >
           {props.item.medName}, {props.item.medAmt}
         </NavLink>
       </span>
-      <span>
-        <FontAwesomeIcon
-          icon={faCircleXmark}
-          onClick={(e) => props.handleDelete(e)}
-        />
-      </span>
+      <FontAwesomeIcon
+        icon={faCircleXmark}
+        onClick={(e) => props.handleDelete(e)}
+      />
     </li>
   )
 }

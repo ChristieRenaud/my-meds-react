@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { signOut, onAuthStateChanged } from "firebase/auth"
 import { auth, database } from "../firebase"
 import { useNavigate } from "react-router-dom"
-import { onValue, ref, push, remove } from "firebase/database"
+import { onValue, ref, push, remove, set } from "firebase/database"
 import ListItem from "../components/ListItem"
 
 export default function MedsInfo() {
@@ -68,11 +68,18 @@ export default function MedsInfo() {
     const userInDB = ref(database, `users/${userId}`)
     if (formAmt && formName) {
       setMedications(() => [])
+      // const newMedRef = push(userInDB)
       push(userInDB, {
         name: formName,
         amt: formAmt,
-        info: "a drug",
       })
+      // const medObject = {}
+      // medObject[formName] = {
+      //   amount: formAmt,
+      //   info: "",
+      //   notes: "",
+      // }
+      // set(userInDB, medObject)
 
       setFormAmt(() => "")
       setFormName(() => "")
@@ -82,6 +89,7 @@ export default function MedsInfo() {
   }
 
   const handleDelete = (e) => {
+    console.log(e.currentTarget.parentElement.id)
     const itemId = e.currentTarget.parentElement.id
     const userId = user.uid
     let exactLocationOfItemInDB = ref(database, `users/${userId}/${itemId}`)
@@ -99,6 +107,7 @@ export default function MedsInfo() {
               key={item.medId}
               handleDelete={handleDelete}
               item={item}
+              // userIdFromState={userId}
             />
           ))}
         </ul>
