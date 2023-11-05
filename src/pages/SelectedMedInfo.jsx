@@ -98,10 +98,7 @@ export default function SelectedMedInfo() {
             height={80}
             width={80}
             color="#25436c"
-            wrapperStyle={{}}
-            wrapperClass=""
             visible={true}
-            ariaLabel="oval-loading"
             secondaryColor="#25436c"
             strokeWidth={2}
             strokeWidthSecondary={2}

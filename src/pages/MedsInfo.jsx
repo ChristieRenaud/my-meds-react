@@ -11,6 +11,9 @@ export default function MedsInfo() {
   const [formAmt, setFormAmt] = useState("")
   const navigate = useNavigate()
   const [error, setError] = useState(null)
+  const [updateOpen, setUpdateOpen] = useState([false, ""])
+  const [updateFormAmt, setUpdateFormAmt] = useState("")
+  const [updateFormNotes, setUpdateFormNotes] = useState("")
   const user = auth.currentUser
   console.log(user)
 
@@ -31,6 +34,7 @@ export default function MedsInfo() {
                     medId: item.key,
                     medName: item.val().name,
                     medAmt: item.val().amt,
+                    medNotes: item.val().notes || "",
                   },
                 ])
               }
@@ -68,18 +72,10 @@ export default function MedsInfo() {
     const userInDB = ref(database, `users/${userId}`)
     if (formAmt && formName) {
       setMedications(() => [])
-      // const newMedRef = push(userInDB)
       push(userInDB, {
         name: formName,
         amt: formAmt,
       })
-      // const medObject = {}
-      // medObject[formName] = {
-      //   amount: formAmt,
-      //   info: "",
-      //   notes: "",
-      // }
-      // set(userInDB, medObject)
 
       setFormAmt(() => "")
       setFormName(() => "")
@@ -95,22 +91,30 @@ export default function MedsInfo() {
     let exactLocationOfItemInDB = ref(database, `users/${userId}/${itemId}`)
     remove(exactLocationOfItemInDB)
   }
+
+  const showUpdateForm = (e, medName) => {
+    const medId = e.currentTarget.parentElement
+    console.log(updateOpen[0])
+    console.log(medName)
+    setUpdateOpen((array) => [!array[0], medName, medId])
+  }
   return (
     <div>
       <div className="meds-list">
-        <h2 className="subhead">
+        <h3 className="subhead">
           {user.displayName && `${user.displayName}'s`} Medicines
-        </h2>
-        <ul className="list-items" id="meds-list-items">
+        </h3>
+        {updateOpen[0] && <p>Update Form</p>}
+        <dl className="list-items" id="meds-list-items">
           {medications.map((item) => (
             <ListItem
               key={item.medId}
               handleDelete={handleDelete}
+              showUpdateForm={showUpdateForm}
               item={item}
-              // userIdFromState={userId}
             />
           ))}
-        </ul>
+        </dl>
       </div>
       <form className="form">
         <label className="med-name" htmlFor="med-name">
