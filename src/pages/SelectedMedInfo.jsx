@@ -2,8 +2,8 @@ import { useState, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { nanoid } from "nanoid"
 import { auth, database } from "../firebase"
-import { signOut, onAuthStateChanged } from "firebase/auth"
-import { onValue, ref, push, remove, update } from "firebase/database"
+import { onAuthStateChanged } from "firebase/auth"
+import { onValue, ref, update } from "firebase/database"
 import { Oval } from "react-loader-spinner"
 
 export default function SelectedMedInfo() {

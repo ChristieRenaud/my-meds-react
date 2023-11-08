@@ -10,7 +10,6 @@ body {
   margin: 0;
   padding: 0;
   background-color: #fbf3ea;
-  /* user-select: none; */
 }
 
 header {
@@ -96,9 +95,6 @@ li {
   background-color: white;
   margin-left: -10px;
   padding-left: 10px;
-  /* margin-bottom: 30px; */
-
-  /* box-shadow: 0 0 10px #25436c, 0 0 10px #25436c; */
 }
 
 .list-info {
@@ -127,9 +123,33 @@ li {
   padding: 20px;
   background: #dbf3ff;
   border: 1px solid rgb(37, 67, 108, 0.5);
-  /* background: #fef4ba; */
   border-radius: 15px;
   margin: 30px -10px;
+}
+
+.form-update {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  max-width: 550px;
+  width: 90vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1000;
+}
+.form-update h3 {
+  margin-top: 0;
+}
+
+.form-disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.form-disabled input {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 label {
@@ -146,6 +166,11 @@ input {
   font-family: inherit;
 }
 
+textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  font-family: inherit;
+}
 .input:hover,
 .input:focus {
   background-color: #f8fafc;
@@ -160,7 +185,6 @@ input {
   text-transform: uppercase;
   color: white;
   background-color: rgba(37, 57, 104, 0.6);
-  /* background: #71b9db; */
   cursor: pointer;
   letter-spacing: 1px;
   transition: 200ms;
@@ -169,18 +193,31 @@ input {
   font-size: 18px;
 }
 
+.update-bns {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.btn-update {
+  width: 48%;
+  padding-left: 1em;
+  padding-right: 1em;
+  /* margin-right: 0.5em; */
+}
+
 .btn-signout {
   margin-top: 20px;
   padding-left: 2em;
   padding-right: 2em;
   font-size: 12px;
 }
+
 .btn-back {
   padding-left: 2em;
   padding-right: 2em;
-  /* color: rgba(37, 67, 108, 1);
-  background-color: #71b9db; */
 }
+
 .btn:hover {
   color: #fef9dc;
   background-color: rgba(37, 57, 104, 1);

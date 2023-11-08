@@ -22,7 +22,7 @@ export default function ListItem(props) {
         />
         <FontAwesomeIcon
           icon={faPen}
-          onClick={(e) => props.showUpdateForm(e, props.item.medName)}
+          onClick={(e) => props.showUpdateForm(e, props.item)}
         />
       </dt>
       {props.item.medNotes != "" ? (
