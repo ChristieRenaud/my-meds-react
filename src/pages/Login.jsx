@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react"
+import Error from "../components/Error"
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../firebase"
-import { NavLink, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function Login() {
   const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState(null)
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid
-        console.log(uid)
         navigate(`../${uid}`)
       } else {
         console.log("user logged out")
@@ -20,15 +21,13 @@ export default function Login() {
     })
   }, [])
 
-  const onLogin = (e) => {
+  const loginUser = (e) => {
     e.preventDefault()
-
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
         setError(() => null)
         navigate(`/${user.uid}`)
-        console.log(user)
       })
       .catch((error) => {
         const errorCode = error.code
@@ -37,6 +36,7 @@ export default function Login() {
         setError(() => "Wrong email or password, please try again")
       })
   }
+
   return (
     <div>
       <h2 className="subhead">
@@ -46,12 +46,12 @@ export default function Login() {
         No more searching through bottles and containers to get the information
         you need. Keep track of all your medications and dosages in one
         easy-to-use app. No account?{" "}
-        <NavLink to="signup" className="link">
+        <Link to="signup" className="link">
           Sign-up here
-        </NavLink>
+        </Link>
       </p>
       <h2 className="subhead">Login</h2>
-      <form className="form">
+      <form className="form" onSubmit={loginUser}>
         <label className="label" htmlFor="email">
           Email
         </label>
@@ -67,15 +67,14 @@ export default function Login() {
           Password
         </label>
         <input
-          className=""
           id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        {error && <p className="error-message">{error}</p>}
-        <button className="btn btn-form" id="login-button" onClick={onLogin}>
+        {error && <Error errorMessage={error} />}
+        <button className="btn btn-form" id="login-button">
           Submit
         </button>
       </form>

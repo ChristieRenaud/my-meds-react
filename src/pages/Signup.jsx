@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
+import Error from "../components/Error"
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -20,7 +21,6 @@ export default function Signup() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid
-        console.log(uid)
         navigate(`/${uid}`)
       } else {
         console.log("user logged out")
@@ -28,7 +28,7 @@ export default function Signup() {
     })
   }, [])
 
-  function createUserAccount(id) {
+  function createUserDatabase(id) {
     set(ref(database, "users/" + id), {
       userId: id,
     })
@@ -52,9 +52,8 @@ export default function Signup() {
       .then((userCredential) => {
         const user = userCredential.user
         const userId = user.uid
-        console.log(userId)
         setError(() => null)
-        createUserAccount(userId)
+        createUserDatabase(userId)
         updateUserAccount()
         navigate("/")
       })
@@ -121,7 +120,7 @@ export default function Signup() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        {error && <p className="error-message">{error}</p>}
+        {error && <Error errorMessage={error} />}
         <button
           className="btn btn-form"
           id="signup-button"

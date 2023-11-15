@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import Error from "../components/Error"
 import { useLocation, useNavigate } from "react-router-dom"
 import { nanoid } from "nanoid"
 import { auth, database } from "../firebase"
@@ -7,12 +8,13 @@ import { onValue, ref, update } from "firebase/database"
 import { Oval } from "react-loader-spinner"
 
 export default function SelectedMedInfo() {
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const [medLabel, setMedLabel] = useState({})
   const [loading, setLoading] = useState(true)
   const [infoIsInDatabase, setInfoIsInDatabase] = useState(false)
-  const location = useLocation()
-  const navigate = useNavigate()
-  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const user = auth.currentUser
   const userId = user.uid
@@ -23,12 +25,14 @@ export default function SelectedMedInfo() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid
+        // Check if label info is already in database, if so save to medLabel
         onValue(ref(database, `users/${uid}/${med.medId}`), (snapshot) => {
           if (snapshot.val().info) {
             setInfoIsInDatabase(true)
             setMedLabel(snapshot.val().info)
             setLoading(false)
           } else {
+            // if not, fetch it from api and update the medLabel state
             fetch(
               `https://api.fda.gov/drug/label.json?search=openfda.brand_name:${med.medName.toLowerCase()}`
             )
@@ -52,7 +56,7 @@ export default function SelectedMedInfo() {
               .then(() => setLoading(false))
               .catch((error) => {
                 setLoading(false)
-                setError(true)
+                setErrorMessage("Sorry, no label information found.")
               })
           }
         })
@@ -62,6 +66,7 @@ export default function SelectedMedInfo() {
     })
   }, [])
 
+  // if there is info in medLabel state but not in database, update database
   useEffect(() => {
     if (!infoIsInDatabase && Object.entries(medLabel).length !== 0) {
       update(ref(database, `users/${userId}/${med.medId}`), {
@@ -69,14 +74,6 @@ export default function SelectedMedInfo() {
       })
     }
   }, [medLabel])
-
-  function ErrorMessage() {
-    return (
-      <div className="error">
-        <p>Sorry, no label information found.</p>
-      </div>
-    )
-  }
 
   const medLabelElements = Object.values(medLabel)
     .filter((field) => field !== "none")
@@ -105,7 +102,11 @@ export default function SelectedMedInfo() {
           />
         </div>
       )}
-      {error && <ErrorMessage />}
+      {errorMessage && (
+        <div>
+          <Error errorMessage={errorMessage} />
+        </div>
+      )}
       <div>{medLabelElements}</div>
     </div>
   )

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import Error from "../components/Error"
 import { signOut, onAuthStateChanged } from "firebase/auth"
 import { auth, database } from "../firebase"
 import { useNavigate } from "react-router-dom"
@@ -47,6 +48,8 @@ export default function MedsInfo() {
       }
     })
   }, [])
+
+  /* Event handlers */
 
   const handleLogout = () => {
     signOut(auth)
@@ -104,31 +107,43 @@ export default function MedsInfo() {
     setUpdateFormNotes("")
   }
 
+  function checkInput(input) {
+    const regex = /[\w\s]/
+    return regex.test(input)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setError("")
     const userId = user.uid
     const userInDB = ref(database, `users/${userId}`)
-    if (formAmt && formName) {
-      setMedications(() => [])
-      push(userInDB, {
-        name: formName,
-        amt: formAmt,
-      })
 
-      setFormAmt(() => "")
-      setFormName(() => "")
+    if (formAmt && formName) {
+      if (checkInput(formAmt) && checkInput(formName)) {
+        setMedications(() => [])
+        push(userInDB, {
+          name: formName.trim(),
+          amt: formAmt.trim(),
+        })
+        setFormAmt(() => "")
+        setFormName(() => "")
+      } else {
+        setError("Only letters and numbers may be entered")
+        !checkInput(formName) ? setFormName(() => "") : null
+        !checkInput(formAmt) ? setFormAmt(() => "") : null
+      }
     } else {
       setError(() => "Please fill in both fields")
     }
   }
 
   const handleDelete = (e) => {
-    console.log(e.currentTarget.parentElement.id)
-    const itemId = e.currentTarget.parentElement.id
-    const userId = user.uid
-    let exactLocationOfItemInDB = ref(database, `users/${userId}/${itemId}`)
-    remove(exactLocationOfItemInDB)
+    if (window.confirm("Are you sure you wish to delete this item?")) {
+      const itemId = e.currentTarget.parentElement.id
+      const userId = user.uid
+      let exactLocationOfItemInDB = ref(database, `users/${userId}/${itemId}`)
+      remove(exactLocationOfItemInDB)
+    }
   }
 
   const showUpdateForm = (e, medItem) => {
@@ -147,6 +162,7 @@ export default function MedsInfo() {
         <h3 className="subhead">
           {user.displayName && `${user.displayName}'s`} Medicines
         </h3>
+        {/* Update Database Form */}
         {updateOpen && (
           <form className="form form-update">
             <h3>{`Update ${currentItemInfo.medName}`}</h3>
@@ -173,7 +189,7 @@ export default function MedsInfo() {
               rows="10"
               cols="5"
             ></textarea>
-            {message && <p className="error-message">{message}</p>}
+            {message && <Error errorMessage={message} />}
             <div className="update-bns" display="flex">
               <button
                 className="btn btn-form btn-update"
@@ -203,6 +219,7 @@ export default function MedsInfo() {
           ))}
         </dl>
       </div>
+      {/* Add Medicine to Database Form */}
       <form
         className={`form ${updateOpen ? "form-disabled" : null}`}
         onSubmit={handleSubmit}
@@ -227,7 +244,7 @@ export default function MedsInfo() {
           value={formAmt}
           onChange={handleAmtChange}
         />
-        {error && <p className="error-message">{error}</p>}
+        {error && <Error errorMessage={error} />}
         <button className="btn btn-form" id="add-button">
           Submit
         </button>

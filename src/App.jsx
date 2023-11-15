@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import MedsInfo from "./pages/MedsInfo"
 import Layout from "./components/Layout"
 import SelectedMedInfo from "./pages/SelectedMedInfo"
+import NotFound from "./pages/NotFound"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/:id/:info" element={<SelectedMedInfo />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   )

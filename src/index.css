@@ -66,10 +66,9 @@ p {
   color: #71b9db;
 }
 
-.error-message {
+.error {
   font-size: 14px;
-  color: rgba(37, 67, 108, 0.8);
-  /* padding-bottom: 16px; */
+  color: rgb(37, 67, 108);
   margin-top: 0;
 }
 
@@ -157,6 +156,7 @@ label {
   padding-bottom: 5px;
   color: rgb(37, 67, 108, 0.8);
 }
+
 input {
   margin-bottom: 15px;
   border: 0;
@@ -171,10 +171,12 @@ textarea {
   padding: 10px;
   font-family: inherit;
 }
+
 .input:hover,
 .input:focus {
   background-color: #f8fafc;
 }
+
 .btn {
   border: 0;
   border-radius: 5px;
@@ -189,6 +191,7 @@ textarea {
   letter-spacing: 1px;
   transition: 200ms;
 }
+
 .btn-form {
   font-size: 18px;
 }
@@ -203,7 +206,6 @@ textarea {
   width: 48%;
   padding-left: 1em;
   padding-right: 1em;
-  /* margin-right: 0.5em; */
 }
 
 .btn-signout {
@@ -246,4 +248,17 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 30px;
+  text-align: center;
+}
+
+.not-found-container h2 {
+  margin-bottom: 40px;
 }
